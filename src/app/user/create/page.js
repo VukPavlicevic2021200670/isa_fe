@@ -1,12 +1,44 @@
+'use client'
+
 import Link from "next/link";
+import {useEffect, useState} from "react";
+import {get} from "@/core/httpClient";
 
 export default function UserCreate() {
+    const [counter, setCounter] = useState(0);
+    const [loading, setLoading] = useState(true);
+    const [data, setData] = useState();
+
+    const getFirstName = async () => {
+        setLoading(true)
+        let result = await get("/user/get-first-name");
+        setLoading(false);
+        setData(result.data);
+    }
+
+    useEffect(() => {
+        getFirstName();
+    }, [counter]);
+
     return (
         <>
-            <h1>USER CREATE PAGE!</h1>
-            <br/>
-            <br/>
-            <Link href="/user/list">Go to user list page</Link>
+            {loading === true ? <h1>Loading...</h1> : (
+                <>
+                    <h1>{data}</h1>
+                    <h1>{counter}</h1>
+                    <br/>
+                    <br/>
+                    <button onClick={() => {
+                        setCounter(counter + 1)
+                    }}>Add + 1
+                    </button>
+                    <h1>USER CREATE PAGE!</h1>
+                    <br/>
+                    <br/>
+                    <Link href="/user/list">Go to user list page</Link>
+                </>
+            )}
+
         </>
     );
 }

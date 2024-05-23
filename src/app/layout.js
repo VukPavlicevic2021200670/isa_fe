@@ -1,6 +1,10 @@
+'use client'
+
 import "bootstrap/dist/css/bootstrap.min.css"
 import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer/Footer";
+import {TestProvider} from "@/contexts/testContext";
+import {ListActionProvider} from "@/contexts/listActionContext";
 
 export default function RootLayout({children}) {
     return (
@@ -8,7 +12,13 @@ export default function RootLayout({children}) {
         <body>
         <div className="container py-3">
             <Header />
-            <main>{children}</main>
+            <main>
+                <TestProvider>
+                    <ListActionProvider>
+                        {children}
+                    </ListActionProvider>
+                </TestProvider>
+            </main>
             <Footer />
         </div>
         </body>
